@@ -1,0 +1,38 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 2em;
+}
+
+figure {
+	height: 0;
+	width: 0;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+}
+
+aside {
+	width: 100px;
+	height: 86.4px;
+	transform-origin: 0 0;
+	position: absolute;
+}
+
+.top {
+	background-color: #80bdfe;
+	transform: rotate(210deg) skew(-30deg);
+}
+
+.left {
+	background-color: #3e8fe1;
+	transform: rotate(90deg) skew(-30deg);
+}
+
+.right {
+	background-color: #2870bd;
+	transform: rotate(330deg) skew(-30deg);
+}
