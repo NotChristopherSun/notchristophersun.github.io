@@ -1,3 +1,5 @@
+const shapes = [];
+
 class Block {
     constructor(x = 0, y = 0, z = 0, width = 1, length = 1, height = 1, hue = 210, lightness = 50, alpha = 1) {
         this.x = x;
@@ -33,24 +35,18 @@ class Block {
 class Table {
     constructor(x = 0, y = 0, z = 0, width = 8, length = 4, height = 6) {
         var dx = (length - 1) / 2, dy = (width - 1) / 2, dz = height - .5;
-        for ((directionX, directionY) of [(1, 1), (1, -1), (-1, 1), (-1, -1)])
-        this.legTop = new Block(x + dx, y + dy, z, .5, .5, dz, 50);
-        this.legTop.top.remove();
-        this.legLeft = new Block(x + dx, y - dy, z, .5, .5, dz, 50);
-        this.legLeft.top.remove();
-        this.legRight = new Block(x - dx, y + dy, z, .5, .5, dz, 50);
-        this.legRight.top.remove();
-        this.legBottom = new Block(x - dx, y - dy, z, .5, .5, dz, 50);
-        this.legBottom.top.remove();
+        for (const [dirX, dirY] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) {
+            shapes.unshift(new Block(x + dx * dirX, y + dy * dirY, z, .5, .5, dz, 50));
+            shapes[0].shape.firstElementChild.remove();
+        }
         this.top = new Block(x, y, z + dz, width, length, .5, 210);
     }
 }
 
 function init() {
-    const room = [];
-    room.push(new Block(0, 0, -12, 52, 52, 2, 160, 30));
-    room.push(new Block(25, 0, -10, 52, 2, 26, 200, 90));
-    room.push(new Block(-1, 25, -10, 2, 50, 26, 200, 90));
-    room.push(new Table(21, 19, -10, 10, 6, 8));
-    console.log(room);
+    shapes.push(new Block(0, 0, -12, 52, 52, 2, 160, 30));
+    shapes.push(new Block(25, 0, -10, 52, 2, 26, 200, 90));
+    shapes.push(new Block(-1, 25, -10, 2, 50, 26, 200, 90));
+    shapes.push(new Table(21, 19, -10, 10, 6, 8));
+    console.log(shapes);
 }
