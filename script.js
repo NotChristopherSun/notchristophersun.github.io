@@ -55,14 +55,14 @@ class Table extends Model {
 
 class Room extends Model {
     init() {
-        this.parts.push(new Block(0, 0, -12, 52, 52, 2, 160, 30));
-        this.parts.push(new Block(25, 0, -10, 52, 2, 26, 200, 90));
-        this.parts.push(new Block(-1, 25, -10, 2, 50, 26, 200, 90));
+        this.parts.push(new Block(this.x, this.y, this.z, this.width + 2, this.length + 2, 2, 160, 30));
+        this.parts.push(new Block(this.x + this.length / 2, this.y, this.z + 2, this.width + 2, 2, this.height, 200, 90));
+        this.parts.push(new Block(this.x - 1, this.y + this.width / 2, this.z + 2, 2, this.length, this.height, 200, 90));
     }
 }
 
 function init() {
-    shapes.push(new Room(0, 0, -12, 52, 52, 2, 160, 30));
-    shapes.push(new Table(21, 19, -10, 10, 6, 8));
+    shapes.push(new Room(0, 0, -12, 48, 48, 28));
+    shapes.push(new Table(20, 18, -10, 10, 6, 8));
     console.log(shapes);
 }
