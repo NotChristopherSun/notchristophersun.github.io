@@ -33,6 +33,7 @@ class Block {
 class Table {
     constructor(x = 0, y = 0, z = 0, width = 8, length = 4, height = 6) {
         var dx = (length - 1) / 2, dy = (width - 1) / 2, dz = height - .5;
+        for ((directionX, directionY) of [(1, 1), (1, -1), (-1, 1), (-1, -1)])
         this.legTop = new Block(x + dx, y + dy, z, .5, .5, dz, 50);
         this.legTop.top.remove();
         this.legLeft = new Block(x + dx, y - dy, z, .5, .5, dz, 50);
