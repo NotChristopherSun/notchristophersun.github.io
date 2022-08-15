@@ -53,6 +53,12 @@ class Table extends Model {
     }
 }
 
+class Chair extends Model {
+    init() {
+        this.parts.push(...new Table(this.x, this.y, this.z, this.width, this.length, this.height / 2).parts, new Block(this.x - this.width / 2 + .25, this.y, this.z + this.height / 2, this.width, .5, this.height / 2));
+    }
+}
+
 class Room extends Model {
     init() {
         this.parts.push(new Block(this.x, this.y, this.z, this.width + 2, this.length + 2, 2, 160, 30));
@@ -64,5 +70,6 @@ class Room extends Model {
 function init() {
     shapes.push(new Room(0, 0, -12, 48, 48, 28));
     shapes.push(new Table(20, 18, -10, 10, 6, 8));
+    shapes.push(new Chair(14, 18, -10, 4, 4, 10));
     console.log(shapes);
 }
