@@ -59,11 +59,18 @@ class Chair extends Model {
     }
 }
 
+class Window extends Model {
+    init() {
+        for (const [dx, dz] of [[this.length / 2 - 1, 0], [0, 0], [0, this.height - 2], [-this.length / 2 + 1, 0]]) this.parts.push(new Block(this.x + dx, this.y, this.z + dz, 2, dx ? 2 : this.length - 4, dx ? this.height : 2));
+    }
+}
+
 class Room extends Model {
     init() {
         this.parts.push(new Block(this.x, this.y, this.z, this.width + 2, this.length + 2, 2, 160, 30));
         this.parts.push(new Block(this.x + this.length / 2, this.y, this.z + 2, this.width + 2, 2, this.height, 200, 90));
         this.parts.push(new Block(this.x - 1, this.y + this.width / 2, this.z + 2, 2, this.length, this.height, 200, 90));
+        this.parts.push(new Window(this.x - 1, this.y + this.width / 2, this.z + 2, 2, this.length, this.height));
     }
 }
 
