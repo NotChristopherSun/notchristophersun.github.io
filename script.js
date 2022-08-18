@@ -21,24 +21,23 @@ class Block extends Model {
         var cube = document.createElement("figure");
         cube.style.left = -x + y + (length - width) / 2 + "vmin";
         cube.style.top = (-x * .5 - y * .5 - z + (width + length) / 4 - height) * 1.155 + "vmin";
-        var top = document.createElement("aside");
-        top.style.width = length * 1.155 + "vmin";
-        top.style.height = width + "vmin";
-        top.style.backgroundColor = `hsla(${hue}, 100%, ${lightness}%, ${alpha})`;
-        top.style.transform = "rotate(210deg) skew(-30deg)";
-        var left = document.createElement("aside");
-        left.style.width = height * 1.155 + "vmin";
-        left.style.height = length + "vmin";
-        left.style.backgroundColor = `hsla(${hue}, 100%, ${lightness - 10}%, ${alpha})`;
-        left.style.transform = "rotate(90deg) skew(-30deg)";
-        var right = document.createElement("aside");
-        right.style.width = width * 1.155 + "vmin";
-        right.style.height = height + "vmin";
-        right.style.backgroundColor = `hsla(${hue}, 100%, ${lightness - 20}%, ${alpha})`;
-        right.style.transform = "rotate(330deg) skew(-30deg)";
-        cube.append(top, left, right);
+        this.top = document.createElement("aside");
+        this.top.style.width = length * 1.155 + "vmin";
+        this.top.style.height = width + "vmin";
+        this.top.style.backgroundColor = `hsla(${hue}, 100%, ${lightness}%, ${alpha})`;
+        this.top.style.transform = "rotate(210deg) skew(-30deg)";
+        this.left = document.createElement("aside");
+        this.left.style.width = height * 1.155 + "vmin";
+        this.left.style.height = length + "vmin";
+        this.left.style.backgroundColor = `hsla(${hue}, 100%, ${lightness - 10}%, ${alpha})`;
+        this.left.style.transform = "rotate(90deg) skew(-30deg)";
+        this.right = document.createElement("aside");
+        this.right.style.width = width * 1.155 + "vmin";
+        this.right.style.height = height + "vmin";
+        this.right.style.backgroundColor = `hsla(${hue}, 100%, ${lightness - 20}%, ${alpha})`;
+        this.right.style.transform = "rotate(330deg) skew(-30deg)";
+        cube.append(this.top, this.left, this.right);
         document.body.firstElementChild.appendChild(cube);
-        this.shape = cube;
     }
 }
 
@@ -47,7 +46,7 @@ class Table extends Model {
         var dx = (this.length - 1) / 2, dy = (this.width - 1) / 2, dz = this.height - .5;
         for (const [dirX, dirY] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) {
             this.parts.unshift(new Block(this.x + dx * dirX, this.y + dy * dirY, this.z, .5, .5, dz, 50));
-            this.parts[0].shape.firstElementChild.remove();
+            this.parts[0].top.remove();
         }
         this.parts.unshift(new Block(this.x, this.y, this.z + dz, this.width, this.length, .5, 210));
     }
@@ -61,7 +60,11 @@ class Chair extends Model {
 
 class Window extends Model {
     init() {
-        for (const [dx, dz] of [[this.length / 2 - 1, 0], [0, 0], [0, this.height - 2], [-this.length / 2 + 1, 0]]) this.parts.push(new Block(this.x + dx, this.y, this.z + dz, 2, dx ? 2 : this.length - 4, dx ? this.height : 2));
+        this.parts.push(new Block(this.x + this.length / 2 - 1, this.y, this.z, 2, 2, this.height), new Block(this.x, this.y, this.z, 2, this.length - 4, 2));
+        this.parts.push(new Block(this.x, this.y, this.z + 2, this.width / 2, this.length - 4, this.height - 4, 200, 90, .3));
+        this.parts.push(new Block(this.x, this.y, this.z + this.height - 2, 2, this.length - 4, 2), new Block(this.x - this.length / 2 + 1, this.y, this.z, 2, 2, this.height));
+        this.parts[2].top.remove();
+        this.parts[2].right.remove();
     }
 }
 
@@ -69,14 +72,25 @@ class Room extends Model {
     init() {
         this.parts.push(new Block(this.x, this.y, this.z, this.width + 2, this.length + 2, 2, 160, 30));
         this.parts.push(new Block(this.x + this.length / 2, this.y, this.z + 2, this.width + 2, 2, this.height, 200, 90));
-        this.parts.push(new Block(this.x - 1, this.y + this.width / 2, this.z + 2, 2, this.length, this.height, 200, 90));
-        this.parts.push(new Window(this.x - 1, this.y + this.width / 2, this.z + 2, 2, this.length, this.height));
+        this.parts.push(new Block(this.x + this.length / 3 - 1, this.y + this.width / 2, this.z + 2, 2, this.length / 3, this.height, 200, 90));
+        this.parts.push(new Block(this.x - 1, this.y + this.width / 2, this.z + 2, 2, this.length / 3, this.height / 4, 200, 90));
+        this.parts.push(new Window(this.x - 1, this.y + this.width / 2, this.z + this.height / 4 + 2, 2, this.length / 3, this.height / 2));
+        this.parts.push(new Block(this.x - 1, this.y + this.width / 2, this.z + this.height * .75 + 2, 2, this.length / 3, this.height / 4, 200, 90));
+        this.parts.push(new Block(this.x - this.length / 3 - 1, this.y + this.width / 2, this.z + 2, 2, this.length / 3, this.height, 200, 90));
+        this.parts[2].right.remove();
+        this.parts[3].top.remove();
+        this.parts[3].right.remove();
+        this.parts[4].parts[0].top.remove();
+        this.parts[4].parts[3].top.remove();
+        this.parts[4].parts[4].top.remove();
+        this.parts[4].parts[4].right.remove();
+        this.parts[5].right.remove();
     }
 }
 
 function init() {
     shapes.push(new Room(0, 0, -12, 48, 48, 28));
-    shapes.push(new Table(20, 18, -10, 10, 6, 8));
-    shapes.push(new Chair(14, 18, -10, 4, 4, 10));
+    shapes.push(new Table(20, 0, -10, 10, 6, 8));
+    shapes.push(new Chair(14, 0, -10, 4, 4, 10));
     console.log(shapes);
 }
