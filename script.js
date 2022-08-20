@@ -43,12 +43,32 @@ class Block extends Model {
 
 class Table extends Model {
     init() {
-        var dx = (this.length - 1) / 2, dy = (this.width - 1) / 2, dz = this.height - .5;
+        var dx = (this.length - 1) / 2, dy = (this.width - 1) / 2;
         for (const [dirX, dirY] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) {
-            this.parts.unshift(new Block(this.x + dx * dirX, this.y + dy * dirY, this.z, .5, .5, dz, 50));
+            this.parts.unshift(new Block(this.x + dx * dirX, this.y + dy * dirY, this.z, .5, .5, this.height - .5, 50));
             this.parts[0].top.remove();
         }
-        this.parts.unshift(new Block(this.x, this.y, this.z + dz, this.width, this.length, .5, 210));
+        this.parts.push(new Block(this.x, this.y, this.z + this.height - .5, this.width, this.length, .5, 210));
+    }
+}
+
+class Desk extends Model {
+    init() {
+        this.parts.push(new Block(this.x, this.y - this.width * .375, this.z, this.width / 4, this.length, .5, 220));
+        this.parts.push(new Block(this.x, this.y + this.width * .375, this.z, this.width / 4, this.length, .5, 220));
+        this.parts.push(new Block(this.x + this.length / 2 - .25, this.y + .75, this.z + this.height / 2, this.width - 1.5, .5, this.height / 2, 20));
+        this.parts[2].top.remove();
+        this.parts[2].left.remove();
+        this.parts.push(new Block(this.x + this.length / 4, this.y - this.width / 2 + 1.25, this.z + .5, .5, this.length / 2, this.height - 1, 30));
+        this.parts[3].top.remove();
+        this.parts.push(new Block(this.x - this.length / 2 + .5, this.y + this.width * .375, this.z + .5, .5, .5, this.height / 2, 50));
+        this.parts[4].top.remove();
+        this.parts.push(new Block(this.x - .25, this.y + this.width * .375, this.z + this.height / 2, this.width / 4, this.length - .5, .5, 215));
+        this.parts.push(new Block(this.x - this.length / 2 + .5, this.y - this.width * .375, this.z + .5, .5, .5, this.height - .5, 50));
+        this.parts[6].top.remove();
+        this.parts.push(new Block(this.x - this.length / 2 + .5, this.y + this.width * .375, this.z + this.height / 2 + .5, .5, .5, this.height / 2 - .5, 50));
+        this.parts[7].top.remove();
+        this.parts.push(new Block(this.x, this.y, this.z + this.height - .5, this.width, this.length, .5, 210));
     }
 }
 
@@ -90,7 +110,8 @@ class Room extends Model {
 
 function init() {
     shapes.push(new Room(0, 0, -12, 48, 48, 28));
-    shapes.push(new Table(20, 0, -10, 10, 6, 8));
-    shapes.push(new Chair(14, 0, -10, 4, 4, 10));
+    shapes.push(new Table(20, 10, -10, 10, 6, 8));
+    shapes.push(new Desk(20, -12, -10, 12, 6, 10));
+    shapes.push(new Chair(14, 10, -10, 4, 4, 10));
     console.log(shapes);
 }
